@@ -79,18 +79,34 @@ function Scanner() {
       )}
 
       {isScanning && (
-        <button className="icon-button secondary-button" onClick={stopScanning}>
-          <StopIcon width={16} height={16} />
-          Stop Scanning
-        </button>
+        <div className="scanner-status" role="status" aria-live="polite">
+          <span className="scanner-status-dot" aria-hidden="true" />
+          <strong>Scanning live</strong>
+          <span>Point your camera at a QR code</span>
+          <button className="icon-button secondary-button" onClick={stopScanning}>
+            <StopIcon width={16} height={16} />
+            Stop Scanning
+          </button>
+        </div>
       )}
 
-      <video ref={videoRef} className={isScanning ? 'scanner-viewport active' : 'scanner-viewport'} muted playsInline />
+      {(isScanning || result) && (
+        <video
+          ref={videoRef}
+          className={isScanning ? 'scanner-viewport active' : 'scanner-viewport complete'}
+          muted
+          playsInline
+        />
+      )}
 
       {error && <p className="warning-text">{error}</p>}
 
       {result && (
         <div className="scan-result">
+          <p className="scan-success" role="status" aria-live="polite">
+            <CheckIcon width={18} height={18} />
+            QR code scanned successfully
+          </p>
           <h2>Scanned Text</h2>
           <textarea value={result} readOnly />
           <div className="button-row">
