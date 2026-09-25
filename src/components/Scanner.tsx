@@ -90,14 +90,23 @@ function Scanner() {
         </div>
       )}
 
-      {(isScanning || result) && (
+      <div className={isScanning ? 'scanner-preview active' : result ? 'scanner-preview complete' : 'scanner-preview'}>
         <video
           ref={videoRef}
-          className={isScanning ? 'scanner-viewport active' : 'scanner-viewport complete'}
+          className="scanner-viewport"
           muted
           playsInline
+          autoPlay
+          aria-label="Camera preview for scanning QR codes"
         />
-      )}
+        {result && !isScanning && (
+          <div className="scanner-off-state">
+            <CameraIcon width={44} height={44} />
+            <strong>Camera is off.</strong>
+            <span>Press Scan Again to scan.</span>
+          </div>
+        )}
+      </div>
 
       {error && <p className="warning-text">{error}</p>}
 
